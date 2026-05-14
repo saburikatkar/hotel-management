@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏨 Hotel Management Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <h1 class="login-title">🏨 Hotel Management</h1>
+            <p class="login-subtitle">Please login to continue</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select id="role" class="form-control" required>
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            <div style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+                <p><strong>Demo Credentials:</strong></p>
+                <p>Admin: admin / admin123</p>
+                <p>Staff: staff / staff123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="container hidden">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>🏨 Hotel Dashboard</h1>
+                <p>Management System</p>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="overview">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="rooms">
+                        <i class="fas fa-bed"></i>
+                        Room Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="guests">
+                        <i class="fas fa-users"></i>
+                        Guest Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="checkin">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Check-In/Check-Out
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="billing">
+                        <i class="fas fa-receipt"></i>
+                        Billing & Invoice
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="reports">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports & Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="housekeeping">
+                        <i class="fas fa-broom"></i>
+                        Housekeeping
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="maintenance">
+                        <i class="fas fa-tools"></i>
+                        Maintenance
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="services">
+                        <i class="fas fa-concierge-bell"></i>
+                        Services
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="staff">
+                        <i class="fas fa-user-tie"></i>
+                        Staff Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <h2 id="pageTitle">Dashboard Overview</h2>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="toggleSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="btn btn-primary" id="addNewBtn" style="display: none;">
+                        <i class="fas fa-plus"></i>
+                        Add New
+                    </button>
+                    <button class="btn btn-danger" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Overview Section -->
+            <section id="overview" class="content-section">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-bed"></i>
+                        <div class="stat-number" id="totalRooms">16</div>
+                        <div class="stat-label">Total Rooms</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-check"></i>
+                        <div class="stat-number" id="occupiedRooms">8</div>
+                        <div class="stat-label">Occupied</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-bed"></i>
+                        <div class="stat-number" id="availableRooms">6</div>
+                        <div class="stat-label">Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-tools"></i>
+                        <div class="stat-number" id="maintenanceRooms">2</div>
+                        <div class="stat-label">Under Maintenance</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-number" id="currentGuests">12</div>
+                        <div class="stat-label">Current Guests</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-rupee-sign"></i>
+                        <div class="stat-number" id="todayRevenue">₹24,500</div>
+                        <div class="stat-label">Today's Revenue</div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Activity</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Activity</th>
+                                    <th>Room</th>
+                                    <th>Guest</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentActivity"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Occupancy Rate</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="occupancyChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Room Management Section -->
+            <section id="rooms" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Room Management</h3>
+                        <div>
+                            <button class="btn btn-primary" onclick="openRoomModal()">
+                                <i class="fas fa-plus"></i> Add Room
+                            </button>
+                            <button class="btn btn-success" onclick="exportCustomerData()" style="margin-left: 10px;">
+                            </button>                            
+                            <button class="btn btn-success" onclick="exportCustomerData()" style="margin-left: 10px; margin-top: 10px;">
+                                <i class="fas fa-file-excel"></i> Print/Export Excel
+                            </button>
+                        </div>
+                    </div>
+                    <div class="room-grid" id="roomGrid">
+                        <!-- Rooms will be dynamically generated -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Guest Management Section -->
+            <section id="guests" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Guest Management</h3>
+                        <button class="btn btn-primary" onclick="openGuestModal()">
+                            <i class="fas fa-plus"></i> Add Guest
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Guest Name</th>
+                                    <th>Phone</th>
+                                    <th>Room</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guestsTable">
+                                <!-- Guest data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Check-in/Check-out Section -->
+            <section id="checkin" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Check-In / Check-Out</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Guest Name</label>
+                            <input type="text" class="form-control" id="guestName">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="guestPhone">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Room Number</label>
+                            <select class="form-control" id="selectedRoomNumber" onchange="updateRoomDetails()">
+                                <option value="">Select Available Room</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Room Type</label>
+                            <input type="text" class="form-control" id="roomTypeDisplay" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Number of Days</label>
+                            <input type="number" class="form-control" id="stayDays" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Extra Bed</label>
+                            <select class="form-control" id="extraBed">
+                                <option value="0">No</option>
+                                <option value="1">Yes (+₹300)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Payment Mode</label>
+                            <select class="form-control" id="paymentMode">
+                                <option value="cash">Cash</option>
+                                <option value="card">Card</option>
+                                <option value="upi">UPI</option>
+                                <option value="online">Online</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-success" onclick="processCheckIn()">
+                            <i class="fas fa-sign-in-alt"></i> Check-In
+                        </button>
+                        <button class="btn btn-warning" onclick="processCheckOut()">
+                            <i class="fas fa-sign-out-alt"></i> Check-Out
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Billing Section -->
+            <section id="billing" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Billing & Invoice</h3>
+                    </div>
+                    <div id="billingContent">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Guest Name</label>
+                                <input type="text" class="form-control" id="billGuestName" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Room Number</label>
+                                <input type="text" class="form-control" id="billRoomNumber" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Check-in Date</label>
+                                <input type="date" class="form-control" id="billCheckIn" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Check-out Date</label>
+                                <input type="date" class="form-control" id="billCheckOut" readonly>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Rate</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="billItems">
+                                    <tr>
+                                        <td>Room Charges</td>
+                                        <td id="roomDays">0</td>
+                                        <td id="roomRate">₹0</td>
+                                        <td id="roomAmount">₹0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Extra Bed</td>
+                                        <td id="extraBedQty">0</td>
+                                        <td>₹300</td>
+                                        <td id="extraBedAmount">₹0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Food & Beverages</td>
+                                        <td><input type="number" class="form-control" id="foodQty" value="0" min="0"></td>
+                                        <td>₹500</td>
+                                        <td id="foodAmount">₹0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Laundry</td>
+                                        <td><input type="number" class="form-control" id="laundryQty" value="0" min="0"></td>
+                                        <td>₹200</td>
+                                        <td id="laundryAmount">₹0</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3"><strong>Subtotal</strong></td>
+                                        <td id="subtotal">₹0</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><strong>Total</strong></td>
+                                        <td id="totalAmount">₹0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button class="btn btn-primary" onclick="generateInvoice()">
+                                <i class="fas fa-file-pdf"></i> Generate Invoice
+                            </button>
+                            <button class="btn btn-success" onclick="printBill()">
+                                <i class="fas fa-print"></i> Print Bill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Reports & Analytics</h3>
+                        <div>
+                            <select class="form-control" id="reportPeriod" style="display: inline-block; width: auto; margin-right: 10px;">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="generateReport()">
+                                <i class="fas fa-chart-bar"></i> Generate Report
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other sections will be added here -->
+            <section id="housekeeping" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Housekeeping Management</h3>
+                    </div>
+                    <p>Housekeeping management features will be implemented here.</p>
+                </div>
+            </section>
+
+            <section id="maintenance" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Maintenance Tracker</h3>
+                    </div>
+                    <p>Maintenance tracking features will be implemented here.</p>
+                </div>
+            </section>
+
+            <section id="services" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Service Management</h3>
+                    </div>
+                    <p>Service management features will be implemented here.</p>
+                </div>
+            </section>
+
+            <section id="staff" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Staff Management</h3>
+                    </div>
+                    <p>Staff management features will be implemented here.</p>
+                </div>
+            </section>
+
+            <section id="settings" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Settings</h3>
+                    </div>
+                    <p>Settings and configuration options will be implemented here.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="roomModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add/Edit Room</h3>
+                <button class="close" onclick="closeRoomModal()">&times;</button>
+            </div>
+            <form id="roomForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Room Number</label>
+                        <input type="text" class="form-control" id="roomNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Room Type</label>
+                        <select class="form-control" id="roomTypeSelect" required>
+                            <option value="">Select Type</option>
+                            <option value="vip">VIP Suite</option>
+                            <option value="single">Single Bed</option>
+                            <option value="triple">Triple Bed</option>
+                            <option value="double">Double Deluxe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Price per Night</label>
+                        <input type="number" class="form-control" id="roomPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-control" id="roomStatus" required>
+                            <option value="available">Available</option>
+                            <option value="occupied">Occupied</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="cleaning">Cleaning</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Save Room</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeRoomModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="guestModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add/Edit Guest</h3>
+                <button class="close" onclick="closeGuestModal()">&times;</button>
+            </div>
+            <form id="guestForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Guest Name</label>
+                        <input type="text" class="form-control" id="guestNameInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="guestPhoneInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="guestEmail">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ID Proof Type</label>
+                        <select class="form-control" id="idProofType">
+                            <option value="aadhar">Aadhar Card</option>
+                            <option value="pan">PAN Card</option>
+                            <option value="passport">Passport</option>
+                            <option value="driving">Driving License</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ID Proof Number</label>
+                        <input type="text" class="form-control" id="idProofNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-control" id="guestAddress" rows="3"></textarea>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Save Guest</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeGuestModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
